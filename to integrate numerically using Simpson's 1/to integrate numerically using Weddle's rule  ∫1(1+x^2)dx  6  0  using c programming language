@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <math.h>
+
+double function(double x) {
+    return 1 / (1 + x * x);
+}
+
+double weddles_rule(double a, double b) {
+    int n = 6; // Number of subintervals
+    double h = (b - a) / n;
+    double sum = 0.0;
+    double x;
+
+    for (int i = 0; i <= n/6; i++) {
+        x = a + i * 6 * h;
+        sum += (3 * h / 10) * (function(x) +
+                               5 * function(x + h) +
+                               function(x + 2 * h) +
+                               6 * function(x + 3 * h) +
+                               function(x + 4 * h) +
+                               5 * function(x + 5 * h) +
+                               function(x + 6 * h));
+    }
+
+    return sum;
+}
+
+int main() {
+    double lower_limit = 0.0;
+    double upper_limit = 6.0;
+
+    double result = weddles_rule(lower_limit, upper_limit);
+
+    printf("The approximate integral value is: %.4f\n", result);
+
+    return 0;
+}
