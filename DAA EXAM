@@ -1,0 +1,679 @@
+											
+                      
+                                                                  DAA EXAM
+                      
+                      
+                      
+                      
+                      
+1.to integrate numerically using trapezoidal rule  ∫x^2dx  12  0    with n=20. using c programming language  taking input nmber of sub interval , lower limit and upper limit
+
+
+#include <stdio.h>
+#include <math.h>
+
+double function(double x) {
+    return x * x;
+}
+
+double trapezoidal_rule(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0.0;
+    double x;
+
+    sum += function(a) + function(b);
+
+    for (int i = 1; i < n; i++) {
+        x = a + i * h;
+        sum += 2 * function(x);
+    }
+
+    return (h / 2) * sum;
+}
+
+int main() {
+    double lower_limit, upper_limit;
+    int num_intervals;
+     printf("Enter the number of subintervals (n): ");
+    scanf("%d", &num_intervals);
+
+    printf("Enter the lower limit: ");
+    scanf("%lf", &lower_limit);
+
+    printf("Enter the upper limit: ");
+    scanf("%lf", &upper_limit);
+
+   
+
+    double result = trapezoidal_rule(lower_limit, upper_limit, num_intervals);
+
+    printf("The approximate integral value is: %.4f\n", result);
+
+    return 0;
+}
+
+2.to integrate numerically using Simpson's 1/3 rule  ∫x^2dx  12  0    with n=8. using c programming language  taking input nmber of sub interval , lower limit and upper limit
+
+
+#include <stdio.h>
+#include <math.h>
+
+double function(double x) {
+    return x * x;
+}
+
+double simpsons_rule(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = function(a) + function(b);
+    double x;
+
+    for (int i = 1; i < n; i += 2) {
+        x = a + i * h;
+        sum += 4 * function(x);
+    }
+
+    for (int i = 2; i < n - 1; i += 2) {
+        x = a + i * h;
+        sum += 2 * function(x);
+    }
+
+    return (h / 3) * sum;
+}
+
+int main() {
+    double lower_limit, upper_limit;
+    int num_intervals;
+     printf("Enter the number of subintervals (n): ");
+    scanf("%d", &num_intervals);
+
+    printf("Enter the lower limit: ");
+    scanf("%lf", &lower_limit);
+
+    printf("Enter the upper limit: ");
+    scanf("%lf", &upper_limit);
+
+   
+
+    // Checking if the number of subintervals is even
+    if (num_intervals % 2 != 0) {
+        printf("Number of subintervals should be even for Simpson's 1/3 rule.\n");
+        return 1;
+    }
+
+    double result = simpsons_rule(lower_limit, upper_limit, num_intervals);
+
+    printf("The approximate integral value is: %.4f\n", result);
+
+    return 0;
+}
+
+
+
+
+
+3.to integrate numerically using Weddle's rule  ∫1(1+x^2)dx  6  0  using c programming language 
+
+
+#include <stdio.h>
+#include <math.h>
+
+double function(double x) {
+    return 1 / (1 + x * x);
+}
+
+double weddles_rule(double a, double b) {
+    int n = 6; // Number of subintervals
+    double h = (b - a) / n;
+    double sum = 0.0;
+    double x;
+
+    for (int i = 0; i <= n/6; i++) {
+        x = a + i * 6 * h;
+        sum += (3 * h / 10) * (function(x) +
+                               5 * function(x + h) +
+                               function(x + 2 * h) +
+                               6 * function(x + 3 * h) +
+                               function(x + 4 * h) +
+                               5 * function(x + 5 * h) +
+                               function(x + 6 * h));
+    }
+
+    return sum;
+}
+
+int main() {
+    double lower_limit = 0.0;
+    double upper_limit = 6.0;
+
+    double result = weddles_rule(lower_limit, upper_limit);
+
+    printf("The approximate integral value is: %.4f\n", result);
+
+    return 0;
+}
+
+
+4.to  implement newton's forward intrpolation formulausing c programming language 
+
+#include <stdio.h>
+
+double newton_forward_interpolation(double x[], double y[], int n, double target) {
+    double h = x[1] - x[0]; // Assuming equally spaced x values
+    double u = (target - x[0]) / h;
+
+    double result = y[0];
+    double factorial = 1.0;
+    double term = 1.0;
+
+    for (int i = 1; i < n; i++) {
+        factorial *= i;
+        term *= u - (i - 1);
+        result += (term / factorial) * y[i];
+    }
+
+    return result;
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of data points: ");
+    scanf("%d", &n);
+
+    double x[n];
+    double y[n];
+
+    printf("Enter the x values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("x[%d]: ", i);
+        scanf("%lf", &x[i]);
+    }
+
+    printf("Enter the y values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("y[%d]: ", i);
+        scanf("%lf", &y[i]);
+    }
+
+    double target;
+    printf("Enter the target value for interpolation: ");
+    scanf("%lf", &target);
+
+    double interpolation_result = newton_forward_interpolation(x, y, n, target);
+
+    printf("Interpolated value at x = %.4f is: %.4f\n", target, interpolation_result);
+
+    return 0;
+}
+
+
+
+5.to  implement newton's backward intrpolation formulausing c programming language 
+
+#include <stdio.h>
+
+double newton_backward_interpolation(double x[], double y[], int n, double target) {
+    double h = x[1] - x[0]; // Assuming equally spaced x values
+    double u = (target - x[n - 1]) / h;
+
+    double result = y[n - 1];
+    double factorial = 1.0;
+    double term = 1.0;
+
+    for (int i = 1; i < n; i++) {
+        factorial *= i;
+        term *= u + (i - 1);
+        result += (term / factorial) * y[n - 1 - i];
+    }
+
+    return result;
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of data points: ");
+    scanf("%d", &n);
+
+    double x[n];
+    double y[n];
+
+    printf("Enter the x values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("x[%d]: ", i);
+        scanf("%lf", &x[i]);
+    }
+
+    printf("Enter the y values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("y[%d]: ", i);
+        scanf("%lf", &y[i]);
+    }
+
+    double target;
+    printf("Enter the target value for interpolation: ");
+    scanf("%lf", &target);
+
+    double interpolation_result = newton_backward_interpolation(x, y, n, target);
+
+    printf("Interpolated value at x = %.4f is: %.4f\n", target, interpolation_result);
+
+    return 0;
+}
+
+
+6.to  implement larange's  intrpolation formula using c programming language 
+
+#include <stdio.h>
+
+double lagrange_interpolation(double x[], double y[], int n, double target) {
+    double result = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        double term = y[i];
+
+        for (int j = 0; j < n; j++) {
+            if (j != i) {
+                term *= (target - x[j]) / (x[i] - x[j]);
+            }
+        }
+
+        result += term;
+    }
+
+    return result;
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of data points: ");
+    scanf("%d", &n);
+
+    double x[n];
+    double y[n];
+
+    printf("Enter the x values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("x[%d]: ", i);
+        scanf("%lf", &x[i]);
+    }
+
+    printf("Enter the y values:\n");
+    for (int i = 0; i < n; i++) {
+        printf("y[%d]: ", i);
+        scanf("%lf", &y[i]);
+    }
+
+    double target;
+    printf("Enter the target value for interpolation: ");
+    scanf("%lf", &target);
+
+    double interpolation_result = lagrange_interpolation(x, y, n, target);
+
+    printf("Interpolated value at x = %.4f is: %.4f\n", target, interpolation_result);
+
+    return 0;
+}
+
+
+7.to solve the system of linear equations using  gause - elimination method  using c programming language 
+
+#include <stdio.h>
+
+#define N 3 // Number of unknowns
+
+void gaussian_elimination(double A[N][N + 1]) {
+    for (int i = 0; i < N - 1; i++) {
+        // Partial pivoting
+        int pivot_row = i;
+        double pivot_value = A[i][i];
+
+        for (int j = i + 1; j < N; j++) {
+            if (A[j][i] > pivot_value) {
+                pivot_row = j;
+                pivot_value = A[j][i];
+            }
+        }
+
+        // Swap rows
+        if (pivot_row != i) {
+            for (int k = i; k <= N; k++) {
+                double temp = A[i][k];
+                A[i][k] = A[pivot_row][k];
+                A[pivot_row][k] = temp;
+            }
+        }
+
+        // Elimination
+        for (int j = i + 1; j < N; j++) {
+            double factor = A[j][i] / A[i][i];
+
+            for (int k = i; k <= N; k++) {
+                A[j][k] -= factor * A[i][k];
+            }
+        }
+    }
+
+    // Back substitution
+    double X[N];
+    X[N - 1] = A[N - 1][N] / A[N - 1][N - 1];
+
+    for (int i = N - 2; i >= 0; i--) {
+        double sum = 0.0;
+
+        for (int j = i + 1; j < N; j++) {
+            sum += A[i][j] * X[j];
+        }
+
+        X[i] = (A[i][N] - sum) / A[i][i];
+    }
+
+    // Print solution
+    printf("Solution:\n");
+    for (int i = 0; i < N; i++) {
+        printf("X[%d] = %.4f\n", i, X[i]);
+    }
+}
+
+int main() {
+    double A[N][N + 1];
+
+    printf("Enter the augmented matrix coefficients:\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N + 1; j++) {
+            printf("A[%d][%d]: ", i, j);
+            scanf("%lf", &A[i][j]);
+        }
+    }
+
+    gaussian_elimination(A);
+
+    return 0;
+}
+
+
+8.to solve the system of linear equations using  gause - seideal itervation method  using c programming language 
+
+#include <stdio.h>
+#include <math.h>
+
+#define N 3 // Number of unknowns
+#define MAX_ITER 100 // Maximum number of iterations
+#define TOLERANCE 1e-6 // Tolerance for convergence
+
+void gauss_seidel_iteration(double A[N][N], double b[N], double x[N]) {
+    int iter = 0;
+    double error = 0.0;
+
+    do {
+        error = 0.0;
+
+        for (int i = 0; i < N; i++) {
+            double sum = 0.0;
+
+            for (int j = 0; j < N; j++) {
+                if (j != i) {
+                    sum += A[i][j] * x[j];
+                }
+            }
+
+            double new_x = (b[i] - sum) / A[i][i];
+
+            error += fabs(new_x - x[i]);
+            x[i] = new_x;
+        }
+
+        iter++;
+    } while (error > TOLERANCE && iter < MAX_ITER);
+
+    // Print solution
+    if (iter < MAX_ITER) {
+        printf("Solution converged in %d iterations:\n", iter);
+        for (int i = 0; i < N; i++) {
+            printf("X[%d] = %.4f\n", i, x[i]);
+        }
+    } else {
+        printf("Solution did not converge within the maximum number of iterations.\n");
+    }
+}
+
+int main() {
+    double A[N][N];
+    double b[N];
+    double x[N] = {0.0};
+
+    printf("Enter the coefficient matrix A:\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("A[%d][%d]: ", i, j);
+            scanf("%lf", &A[i][j]);
+        }
+    }
+
+    printf("Enter the right-hand side vector b:\n");
+    for (int i = 0; i < N; i++) {
+        printf("b[%d]: ", i);
+        scanf("%lf", &b[i]);
+    }
+
+    gauss_seidel_iteration(A, b, x);
+
+    return 0;
+}
+
+9.to find out the root of the algebraic and transendet equations using regula falsi method
+
+
+#include <stdio.h>
+#include <math.h>
+
+#define MAX_ITER 100 // Maximum number of iterations
+#define TOLERANCE 1e-6 // Tolerance for convergence
+
+double function(double x) {
+    // Define your equation here
+    return x*x - 4;
+}
+
+double regula_falsi(double a, double b) {
+    double fa = function(a);
+    double fb = function(b);
+
+    if (fa * fb > 0) {
+        printf("Error: The function does not have a root in the given interval.\n");
+        return 0.0;
+    }
+
+    double c, fc, error;
+
+    for (int i = 0; i < MAX_ITER; i++) {
+        c = (a * fb - b * fa) / (fb - fa);
+        fc = function(c);
+
+        if (fabs(fc) < TOLERANCE) {
+            printf("Root found at x = %.6f\n", c);
+            return c;
+        }
+
+        if (fa * fc < 0) {
+            b = c;
+            fb = fc;
+        } else {
+            a = c;
+            fa = fc;
+        }
+
+        error = fabs(b - a);
+
+        if (error < TOLERANCE) {
+            printf("Approximate root found at x = %.6f\n", c);
+            return c;
+        }
+    }
+
+    printf("Maximum number of iterations reached.\n");
+    return 0.0;
+}
+
+int main() {
+    double a, b;
+
+    printf("Enter the interval [a, b]: ");
+    scanf("%lf %lf", &a, &b);
+
+    double root = regula_falsi(a, b);
+
+    return 0;
+}
+
+
+10.to find the root of algebraic and transcendental equations using newton rapson method  using c programming language 
+
+#include <stdio.h>
+#include <math.h>
+
+#define MAX_ITER 100 // Maximum number of iterations
+
+double function(double x) {
+    // Define your equation here
+    return x*x - 4;
+}
+
+double derivative(double x) {
+    // Define the derivative of your equation here
+    return 2*x;
+}
+
+double newton_raphson(double x0, double tolerance, double max_error) {
+    double x = x0;
+    double error = 1.0;
+
+    int iter = 0;
+    while (error > tolerance && iter < MAX_ITER) {
+        double f = function(x);
+        double f_prime = derivative(x);
+
+        double x_next = x - f / f_prime;
+
+        error = fabs(x_next - x);
+        x = x_next;
+
+        if (error < max_error) {
+            printf("Approximate root found at x = %.6f\n", x);
+            return x;
+        }
+
+        iter++;
+    }
+
+    printf("Maximum number of iterations reached.\n");
+    return 0.0;
+}
+
+int main() {
+    double x0;
+    double tolerance;
+    double max_error;
+
+    printf("Enter the initial guess x0: ");
+    scanf("%lf", &x0);
+
+    printf("Enter the tolerance: ");
+    scanf("%lf", &tolerance);
+
+    printf("Enter the maximum error: ");
+    scanf("%lf", &max_error);
+
+    double root = newton_raphson(x0, tolerance, max_error);
+
+    return 0;
+}
+
+
+11.to find numerical solution of ordinary differention equations by euler's method using c programming language 
+
+
+#include <stdio.h>
+
+double function(double x, double y) {
+    // Define your differential equation here
+    return x + y;
+}
+
+void euler_method(double x0, double y0, double h, double xn) {
+    double x = x0;
+    double y = y0;
+
+    while (x <= xn) {
+        printf("x = %.2f, y = %.6f\n", x, y);
+
+        double slope = function(x, y);
+        y = y + h * slope;
+        x = x + h;
+    }
+}
+
+int main() {
+    double x0, y0, h, xn;
+
+    printf("Enter the initial condition (x0, y0): ");
+    scanf("%lf %lf", &x0, &y0);
+
+    printf("Enter the step size (h): ");
+    scanf("%lf", &h);
+
+    printf("Enter the final value of x (xn): ");
+    scanf("%lf", &xn);
+
+    euler_method(x0, y0, h, xn);
+
+    return 0;
+}
+
+
+
+
+12.to find numerical solution of ordinary differential equations by ruinge - kutta method using c programming language 
+
+#include <stdio.h>
+
+double function(double x, double y) {
+    // Define your differential equation here
+    return x + y;
+}
+
+void runge_kutta_method(double x0, double y0, double h, double xn) {
+    double x = x0;
+    double y = y0;
+
+    while (x <= xn) {
+        printf("x = %.2f, y = %.6f\n", x, y);
+
+        double k1 = h * function(x, y);
+        double k2 = h * function(x + h/2, y + k1/2);
+        double k3 = h * function(x + h/2, y + k2/2);
+        double k4 = h * function(x + h, y + k3);
+
+        y = y + (k1 + 2*k2 + 2*k3 + k4) / 6;
+        x = x + h;
+    }
+}
+
+int main() {
+    double x0, y0, h, xn;
+
+    printf("Enter the initial condition (x0, y0): ");
+    scanf("%lf %lf", &x0, &y0);
+
+    printf("Enter the step size (h): ");
+    scanf("%lf", &h);
+
+    printf("Enter the final value of x (xn): ");
+    scanf("%lf", &xn);
+
+    runge_kutta_method(x0, y0, h, xn);
+
+    return 0;
+}
+
