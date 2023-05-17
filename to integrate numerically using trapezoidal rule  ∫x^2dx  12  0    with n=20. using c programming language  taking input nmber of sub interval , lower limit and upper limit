@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <math.h>
+
+double function(double x) {
+    return x * x;
+}
+
+double trapezoidal_rule(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0.0;
+    double x;
+
+    sum += function(a) + function(b);
+
+    for (int i = 1; i < n; i++) {
+        x = a + i * h;
+        sum += 2 * function(x);
+    }
+
+    return (h / 2) * sum;
+}
+
+int main() {
+    double lower_limit, upper_limit;
+    int num_intervals;
+     printf("Enter the number of subintervals (n): ");
+    scanf("%d", &num_intervals);
+
+    printf("Enter the lower limit: ");
+    scanf("%lf", &lower_limit);
+
+    printf("Enter the upper limit: ");
+    scanf("%lf", &upper_limit);
+
+   
+
+    double result = trapezoidal_rule(lower_limit, upper_limit, num_intervals);
+
+    printf("The approximate integral value is: %.4f\n", result);
+
+    return 0;
+}
